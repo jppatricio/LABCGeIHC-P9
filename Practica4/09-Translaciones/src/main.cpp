@@ -10,6 +10,7 @@
 
 // program include
 #include "Headers/TimeManager.h"
+#include "Headers/Shader.h"
 
 //GLM include
 #define GLM_FORCE_RADIANS
@@ -60,6 +61,8 @@ GLFWwindow * window;
 bool exitApp = false;
 int lastMousePosX;
 int lastMousePosY;
+
+Shader shader;
 
 double deltaTime;
 
@@ -123,6 +126,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	glViewport(0, 0, screenWidth, screenHeight);
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
+	glEnable(GL_DEPTH_TEST);
+
+	shader.initialize("../../Shaders/transformaciones.vs", "../../Shaders/transformaciones.fs");
 
 	cubo();
 }
@@ -230,13 +237,31 @@ void applicationLoop() {
 	while (psi) {
 		psi = processInput(true);
 		
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+		shader.turnOn();
+
+		GLuint modelLoc = shader.getUniformLocation("model");
+		GLuint viewLoc = shader.getUniformLocation("view");
+		GLuint projLoc = shader.getUniformLocation("projection");
+
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f),
+			(float)screenWidth / screenWidth, 0.01f, 100.0f);
+
+		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -8.0f));
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		glm::mat4 model = glm::mat4(1.0f);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
 		glBindVertexArray(VAO);
-		// This is for the render with index element
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (GLuint *)0);
+
 		glBindVertexArray(0);
+
+		shader.turnOff();
 
 		glfwSwapBuffers(window);
 	}
