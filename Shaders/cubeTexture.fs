@@ -3,7 +3,7 @@
 in vec3 coordTexture;
 out vec4 color;
 
-uniform samplerCube skybox;
+uniform samplerCube skybox; // de 2d a samplerCube
 
 void main()
 {

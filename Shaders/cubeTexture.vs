@@ -5,7 +5,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec3 coordTexture;
+out vec3 coordTexture; // es 3D
 
 void main()
 {

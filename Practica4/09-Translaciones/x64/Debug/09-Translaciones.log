@@ -1,6 +1,0 @@
-﻿  main.cpp
-d:\documentos\8vo semestre\labcgeihc\labcgeihc\practica4\09-translaciones\src\main.cpp(2): fatal error C1083: No se puede abrir el archivo incluir: 'GL/glew.h': No such file or directory
-  Shader.cpp
-d:\documentos\8vo semestre\labcgeihc\labcgeihc\practica4\09-translaciones\src\headers\shader.h(6): fatal error C1083: No se puede abrir el archivo incluir: 'GL/glew.h': No such file or directory
-  TimeManager.cpp
-  Generando código...
